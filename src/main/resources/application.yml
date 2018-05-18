@@ -9,3 +9,11 @@ spring:
         show-sql: true
     main:
       banner-mode: "off"
+
+---
+spring:
+  profiles: docker-compose
+  datasource:
+          url: jdbc:mysql://db:3306/er-sols
+          username: root
+          password: password
