@@ -1,10 +1,7 @@
 package com.s63d.eraccountservice.controllers
 
 import com.s63d.eraccountservice.services.UserService
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,4 +19,16 @@ class UserController(private val userService: UserService) {
 
     @PostMapping("login")
     fun loginUser(@RequestParam email: String, @RequestParam password: String) = userService.login(email, password)
+
+    @GetMapping("{id}")
+    fun getUser(@PathVariable id: Long) = userService.findById(id)
+
+    @PutMapping("{id}")
+    fun updateUser(@PathVariable id: Long,
+                   @RequestParam firstname: String?,
+                   @RequestParam lastname: String?,
+                   @RequestParam address: String?,
+                   @RequestParam postal: String?,
+                   @RequestParam city: String?
+    ) = userService.updateUser(id, firstname, lastname, address, postal, city)
 }

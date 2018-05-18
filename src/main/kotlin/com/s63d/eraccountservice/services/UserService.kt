@@ -20,4 +20,16 @@ class UserService(private val userRepository: UserRepository, private val roleRe
         }
         return true
     }
+
+    fun findById(id: Long) = userRepository.findById(id).get()
+
+    fun updateUser(id: Long, firstname: String?, lastname: String?, address: String?, postal: String?, city: String?): User {
+        val user = userRepository.findById(id).get()
+        user.firstName = firstname ?: user.firstName
+        user.lastName = lastname ?: user.lastName
+        user.address = address ?: user.address
+        user.postal = postal ?: user.postal
+        user.city = city ?: user.city
+        return userRepository.save(user)
+    }
 }
