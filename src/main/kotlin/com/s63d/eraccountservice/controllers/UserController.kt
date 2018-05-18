@@ -31,4 +31,7 @@ class UserController(private val userService: UserService) {
                    @RequestParam postal: String?,
                    @RequestParam city: String?
     ) = userService.updateUser(id, firstname, lastname, address, postal, city)
+
+    @PutMapping("{id}/password")
+    fun updatePassword(@PathVariable id: Long, @RequestParam old: String, @RequestParam new: String) = userService.updatePassword(id, old, new)
 }

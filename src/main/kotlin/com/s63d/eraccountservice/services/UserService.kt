@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 class UserService(private val userRepository: UserRepository, private val roleRepository: RoleRepository) {
     fun createNew(firstname: String, lastname: String, email: String, password: String, address: String, postal: String, city: String): User {
         val basicRole = roleRepository.findById("basic").get()
+        // TODO use hashing
         return userRepository.save(User(email, firstname, lastname, password, address, postal, city, basicRole))
     }
 
@@ -31,5 +32,16 @@ class UserService(private val userRepository: UserRepository, private val roleRe
         user.postal = postal ?: user.postal
         user.city = city ?: user.city
         return userRepository.save(user)
+    }
+
+    fun updatePassword(id: Long, old: String, new: String): Pair<String, String> {
+        val user = userRepository.findById(id).get()
+
+        if (user.password != old) // TODO use hashing
+            throw Exception("Old password does not match")
+        user.password = new
+
+        userRepository.save(user)
+        return "message" to "Password updated"
     }
 }
