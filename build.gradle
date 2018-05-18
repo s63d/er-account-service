@@ -14,6 +14,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.zoltu.git-versioning" version "3.0.3"
+}
+
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
 apply plugin: 'kotlin-jpa'
@@ -22,7 +26,6 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.s63d'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 compileKotlin {
     kotlinOptions {

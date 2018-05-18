@@ -14,6 +14,6 @@ spring:
 spring:
   profiles: docker-compose
   datasource:
-          url: jdbc:mysql://db:3306/er-sols
-          username: root
-          password: password
+      url: jdbc:mysql://account-db:3306/account-db
+      username: root
+      password: accounts
