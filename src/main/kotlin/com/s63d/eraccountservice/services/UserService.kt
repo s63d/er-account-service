@@ -34,7 +34,7 @@ class UserService(private val userRepository: UserRepository, private val roleRe
         return userRepository.save(user)
     }
 
-    fun updatePassword(id: Long, old: String, new: String): Pair<String, String> {
+    fun updatePassword(id: Long, old: String, new: String): Map<String, String> {
         val user = userRepository.findById(id).get()
 
         if (user.password != old) // TODO use hashing
@@ -42,6 +42,6 @@ class UserService(private val userRepository: UserRepository, private val roleRe
         user.password = new
 
         userRepository.save(user)
-        return "message" to "Password updated"
+        return mapOf("message" to "Password updated")
     }
 }
