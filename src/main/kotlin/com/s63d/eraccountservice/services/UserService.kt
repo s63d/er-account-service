@@ -6,20 +6,20 @@ import com.s63d.eraccountservice.repositories.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class UserService(private val userRepository: UserRepository, private val roleRepository: RoleRepository) {
+class UserService(private val userRepository: UserRepository, private val roleRepository: RoleRepository, private val jwtService: JwtService) {
     fun createNew(firstname: String, lastname: String, email: String, password: String, address: String, postal: String, city: String): User {
         val basicRole = roleRepository.findById("basic").get()
         // TODO use hashing
         return userRepository.save(User(email, firstname, lastname, password, address, postal, city, basicRole))
     }
 
-    fun login(email: String, password: String): Boolean {
+    fun login(email: String, password: String): Map<String, String> {
         val user = userRepository.findByEmail(email) ?: throw Exception("User not found")
 
         if (user.password != password) {
             throw Exception("Invalid password")
         }
-        return true
+        return mapOf("token" to jwtService.sign(user))
     }
 
     fun findById(id: Long) = userRepository.findById(id).get()
