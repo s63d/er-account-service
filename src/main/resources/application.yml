@@ -17,3 +17,5 @@ spring:
       url: jdbc:mysql://account-db:3306/account-db
       username: root
       password: accounts
+  jpa:
+    show-sql: false
