@@ -67,6 +67,7 @@ dependencies {
     compile('com.auth0:java-jwt:3.3.0')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    runtime 'io.micrometer:micrometer-registry-prometheus:latest.release'
 }
 
 dependencyManagement {

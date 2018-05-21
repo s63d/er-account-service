@@ -9,7 +9,11 @@ spring:
         show-sql: true
     main:
       banner-mode: "off"
-
+management:
+    endpoints:
+        web:
+            exposure:
+                include: prometheus, health, info
 ---
 spring:
   profiles: docker-compose
