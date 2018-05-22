@@ -9,6 +9,8 @@ spring:
         show-sql: true
     main:
       banner-mode: "off"
+server:
+  port: 8081
 management:
     endpoints:
         web:
@@ -23,3 +25,5 @@ spring:
       password: accounts
   jpa:
     show-sql: false
+server:
+  port: 8080
