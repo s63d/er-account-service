@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserService(private val userRepository: UserRepository, private val roleRepository: RoleRepository, private val jwtService: JwtService) {
-    fun createNew(firstname: String, lastname: String, email: String, password: String, address: String, postal: String, city: String): User {
-        val basicRole = roleRepository.findById("basic").get()
+    fun createNew(firstname: String, lastname: String, email: String, password: String, address: String, postal: String, city: String, role: String): User {
+        val basicRole = roleRepository.findById(role).orElseThrow { Exception("Invalid role") } // TODO response status
         // TODO use hashing
         return userRepository.save(User(email, firstname, lastname, password, address, postal, city, basicRole))
     }

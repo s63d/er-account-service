@@ -14,8 +14,9 @@ class UserController(private val userService: UserService) {
             @RequestParam password: String,
             @RequestParam address: String,
             @RequestParam postal: String,
-            @RequestParam city: String
-    ) = userService.createNew(firstname, lastname, email, password, address, postal, city)
+            @RequestParam city: String,
+            @RequestParam role: String?
+    ) = userService.createNew(firstname, lastname, email, password, address, postal, city, role ?: "basic")
 
     @PostMapping("login")
     fun loginUser(@RequestParam email: String, @RequestParam password: String) = userService.login(email, password)
