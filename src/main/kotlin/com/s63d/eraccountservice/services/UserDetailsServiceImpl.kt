@@ -16,6 +16,11 @@ class UserDetailsServiceImpl(private val userService: UserService) : UserDetails
         return User(user.email, user.password, getAuthorities(user))
     }
 
+    fun loadUserById(id: Long): UserDetails {
+        val user = userService.findById(id)
+        return User(user.email, user.password, getAuthorities(user))
+    }
+
     private fun getAuthorities(user: com.s63d.eraccountservice.domain.User): List<GrantedAuthority> {
         return listOf(
             SimpleGrantedAuthority("ROLE_${user.role.name.toUpperCase()}")

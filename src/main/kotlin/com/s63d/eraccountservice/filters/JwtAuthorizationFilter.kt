@@ -1,6 +1,7 @@
 package com.s63d.eraccountservice.filters
 
 import com.auth0.jwt.JWT
+import com.s63d.eraccountservice.services.UserDetailsServiceImpl
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
@@ -11,7 +12,7 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JwtAuthorizationFilter(authenticationManager: AuthenticationManager) : BasicAuthenticationFilter(authenticationManager) {
+class JwtAuthorizationFilter(authenticationManager: AuthenticationManager, val userDetailService: UserDetailsServiceImpl) : BasicAuthenticationFilter(authenticationManager) {
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         val header:String? = request.getHeader(HttpHeaders.AUTHORIZATION)
 
@@ -26,7 +27,8 @@ class JwtAuthorizationFilter(authenticationManager: AuthenticationManager) : Bas
 
         try {
             val user = JWT.decode(token)
-            SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(user.subject, null, emptyList())
+            val details = userDetailService.loadUserById(user.subject.toLong())
+            SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(details.username, null, details.authorities)
         } catch (_: Exception) {
             SecurityContextHolder.getContext().authentication = null
             throw BadCredentialsException("Failed to decode jwt authentication token")

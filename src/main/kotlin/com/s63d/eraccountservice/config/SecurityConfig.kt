@@ -31,7 +31,7 @@ class SecurityConfig(private val userDetailService: UserDetailsServiceImpl, priv
                 .anyRequest().authenticated()
                 .and()
                 .addFilterAfter(JwtAuthenticationFilter(authenticationManager(), jwtService), BasicAuthenticationFilter::class.java)
-                .addFilterAfter(JwtAuthorizationFilter(authenticationManager()), BasicAuthenticationFilter::class.java)
+                .addFilterAfter(JwtAuthorizationFilter(authenticationManager(), userDetailService), BasicAuthenticationFilter::class.java)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().headers().disable()
     }
