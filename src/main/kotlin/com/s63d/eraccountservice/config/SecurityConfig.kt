@@ -1,6 +1,7 @@
 package com.s63d.eraccountservice.config
 
-import com.s63d.eraccountservice.filters.JWTAuthenticationFilter
+import com.s63d.eraccountservice.filters.JwtAuthenticationFilter
+import com.s63d.eraccountservice.filters.JwtAuthorizationFilter
 import com.s63d.eraccountservice.services.JwtService
 import com.s63d.eraccountservice.services.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
@@ -29,8 +30,8 @@ class SecurityConfig(private val userDetailService: UserDetailsServiceImpl, priv
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterAfter(JWTAuthenticationFilter(authenticationManager(), jwtService), BasicAuthenticationFilter::class.java)
-                // TODO: add authorization filter
+                .addFilterAfter(JwtAuthenticationFilter(authenticationManager(), jwtService), BasicAuthenticationFilter::class.java)
+                .addFilterAfter(JwtAuthorizationFilter(authenticationManager()), BasicAuthenticationFilter::class.java)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().headers().disable()
     }

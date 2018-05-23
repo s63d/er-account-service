@@ -6,8 +6,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import javax.servlet.http.HttpServletRequest
 
-
-class JWTAuthenticationFilter(authManager: AuthenticationManager, authSuccessHandler: AuthenticationSuccessHandler? = null) : UsernamePasswordAuthenticationFilter() {
+class JwtAuthenticationFilter(authManager: AuthenticationManager, authSuccessHandler: AuthenticationSuccessHandler? = null) : UsernamePasswordAuthenticationFilter() {
     init {
         authenticationManager = authManager
         if (authSuccessHandler != null)
@@ -29,8 +28,4 @@ class JWTAuthenticationFilter(authManager: AuthenticationManager, authSuccessHan
     } catch (_:Exception) {
         super.obtainPassword(request)
     }
-
-    //je moet hier nog iets overriden
-    // waarvoor?
-    // ik weet het misschien
 }
