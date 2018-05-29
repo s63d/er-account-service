@@ -1,7 +1,6 @@
 package com.s63d.eraccountservice.controllers
 
 import com.s63d.eraccountservice.services.UserService
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController

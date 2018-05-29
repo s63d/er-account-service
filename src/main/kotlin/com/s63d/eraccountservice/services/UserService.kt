@@ -3,16 +3,20 @@ package com.s63d.eraccountservice.services
 import com.s63d.eraccountservice.domain.User
 import com.s63d.eraccountservice.exceptions.DuplicateEntryException
 import com.s63d.eraccountservice.exceptions.PasswordDoesNotMatchException
+import com.s63d.eraccountservice.exceptions.RoleNotFoundException
 import com.s63d.eraccountservice.repositories.RoleRepository
 import com.s63d.eraccountservice.repositories.UserRepository
+import org.springframework.dao.DataAccessException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(private val userRepository: UserRepository, private val roleRepository: RoleRepository, private val bcrypt: BCryptPasswordEncoder) {
     fun createUser(firstname: String, lastname: String, email: String, password: String, address: String, postal: String, city: String): User {
-        val basicRole = roleRepository.findById("basic").orElseThrow { DuplicateEntryException(email) }
-        return userRepository.save(User(email, firstname, lastname, bcrypt.encode(password), address, postal, city, basicRole))
+        val basicRole = roleRepository.findById("basic").orElseThrow { RoleNotFoundException("basic") }
+        return try{
+            userRepository.save(User(email, firstname, lastname, bcrypt.encode(password), address, postal, city, basicRole))
+        } catch (e: DataAccessException) { throw DuplicateEntryException(email) }
     }
 
     fun findById(id: Long) = userRepository.findById(id).get()
