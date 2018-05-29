@@ -1,6 +1,7 @@
 package com.s63d.eraccountservice.controllers
 
 import com.s63d.eraccountservice.services.UserService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -14,12 +15,8 @@ class UserController(private val userService: UserService) {
             @RequestParam password: String,
             @RequestParam address: String,
             @RequestParam postal: String,
-            @RequestParam city: String,
-            @RequestParam role: String?
-    ) = userService.createNew(firstname, lastname, email, password, address, postal, city, role ?: "basic")
-
-    @PostMapping("login")
-    fun loginUser(@RequestParam email: String, @RequestParam password: String) = userService.login(email, password)
+            @RequestParam city: String
+    ) = userService.createUser(firstname, lastname, email, password, address, postal, city)
 
     @GetMapping("{id}")
     fun getUser(@PathVariable id: Long) = userService.findById(id)
