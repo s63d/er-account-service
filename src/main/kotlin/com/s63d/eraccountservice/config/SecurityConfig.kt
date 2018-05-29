@@ -5,6 +5,7 @@ import com.s63d.eraccountservice.filters.JwtAuthorizationFilter
 import com.s63d.eraccountservice.services.JwtService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -25,7 +26,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 class SecurityConfig(private val userDetailService: UserDetailsService, private val jwtService: JwtService, private val bCryptPasswordEncoder: BCryptPasswordEncoder) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
-        http.cors().and().csrf().disable()
+        http.cors()
+                .and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
@@ -43,8 +45,10 @@ class SecurityConfig(private val userDetailService: UserDetailsService, private 
 
     @Bean
     fun corsConfigurationSource() : CorsConfigurationSource {
-        val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", CorsConfiguration().applyPermitDefaultValues())
-        return source
+        val cors = CorsConfiguration().apply {
+            applyPermitDefaultValues()
+            addExposedHeader(HttpHeaders.AUTHORIZATION)
+        }
+        return UrlBasedCorsConfigurationSource().apply { registerCorsConfiguration("/**", cors) }
     }
 }
