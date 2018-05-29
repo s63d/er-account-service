@@ -21,7 +21,11 @@ class JwtService(private val userService: UserService) : AuthenticationSuccessHa
 
     override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
         val user = userService.findByEmail(authentication.name)!!
-        val token = JWT.create().withSubject(user.email).withClaim("userId", user.id).sign(algo)
+        val token = JWT.create()
+                .withSubject(user.email)
+                .withClaim("userId", user.id)
+                .withClaim("userRole", user.role.name)
+                .sign(algo)
         response.addHeader(HttpHeaders.AUTHORIZATION, PREFIX + token)
     }
 }
