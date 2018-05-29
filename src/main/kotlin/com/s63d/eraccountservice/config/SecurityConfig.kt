@@ -28,6 +28,7 @@ class SecurityConfig(private val userDetailService: UserDetailsService, private 
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterAfter(JwtAuthenticationFilter(authenticationManager(), jwtService), BasicAuthenticationFilter::class.java)
