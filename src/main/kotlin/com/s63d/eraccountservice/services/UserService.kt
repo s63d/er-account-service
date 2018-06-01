@@ -1,9 +1,7 @@
 package com.s63d.eraccountservice.services
 
 import com.s63d.eraccountservice.domain.User
-import com.s63d.eraccountservice.exceptions.DuplicateEntryException
-import com.s63d.eraccountservice.exceptions.PasswordDoesNotMatchException
-import com.s63d.eraccountservice.exceptions.RoleNotFoundException
+import com.s63d.eraccountservice.exceptions.*
 import com.s63d.eraccountservice.repositories.RoleRepository
 import com.s63d.eraccountservice.repositories.UserRepository
 import org.springframework.dao.DataAccessException
@@ -42,5 +40,11 @@ class UserService(private val userRepository: UserRepository, private val roleRe
 
         userRepository.save(user)
         return mapOf("message" to "Password updated")
+    }
+
+    fun updateUserRole(id: Long, role: String): User {
+        val user = userRepository.findById(id).orElseThrow{ UserDoesNotExistException(id) }
+        user.role = roleRepository.findById(role).orElseThrow{ RoleDoesNotExistException(role) }
+        return userRepository.save(user)
     }
 }
