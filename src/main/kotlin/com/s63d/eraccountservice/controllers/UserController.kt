@@ -21,6 +21,9 @@ class UserController(private val userService: UserService) {
     @GetMapping("{id}")
     fun getUser(@PathVariable id: Long) = userService.findById(id)
 
+    @GetMapping("/all")
+    fun getAllUsers() = userService.findAllUsers()
+
     @PutMapping("{id}")
     fun updateUser(@PathVariable id: Long,
                    @RequestParam firstname: String?,

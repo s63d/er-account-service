@@ -19,6 +19,7 @@ class UserService(private val userRepository: UserRepository, private val roleRe
 
     fun findById(id: Long) = userRepository.findById(id).get()
     fun findByEmail(email: String) = userRepository.findByEmail(email)
+    fun findAllUsers() = userRepository.findAll()
 
     fun updateUser(id: Long, firstname: String?, lastname: String?, address: String?, postal: String?, city: String?): User {
         val user = userRepository.findById(id).get()
