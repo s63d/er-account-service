@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class RoleService(private val roleRepository: RoleRepository) {
-
+    fun getAll(): Iterable<Role> = roleRepository.findAll()
     fun createNew(name: String, description: String): Role = roleRepository.save(Role(name, description))
     fun remove(id: String) = roleRepository.deleteById(id)
 }

@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*
 @PreAuthorize("hasRole('ADMIN')")
 class RoleController(private val roleService: RoleService) {
 
+    @GetMapping
+    fun getAllRoles() = roleService.getAll()
+
     @PostMapping
     fun createRole(@RequestParam name: String, @RequestParam description: String): Role = roleService.createNew(name, description)
 
