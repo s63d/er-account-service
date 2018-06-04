@@ -38,7 +38,7 @@ class UserController(private val userService: UserService) {
     @PutMapping("{id}/password")
     fun updatePassword(@PathVariable id: Long, @RequestParam old: String, @RequestParam new: String) = userService.updatePassword(id, old, new)
 
-    @PutMapping("{id}/role")
+    @PostMapping("{id}/role")
     @PreAuthorize("hasRole('ADMIN')")
     fun updateUser(@PathVariable id: Long, @RequestParam role: String) = userService.updateUserRole(id, role)
 }
