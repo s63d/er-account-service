@@ -5,6 +5,7 @@ import com.s63d.eraccountservice.exceptions.*
 import com.s63d.eraccountservice.repositories.RoleRepository
 import com.s63d.eraccountservice.repositories.UserRepository
 import org.springframework.dao.DataAccessException
+import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -19,7 +20,7 @@ class UserService(private val userRepository: UserRepository, private val roleRe
 
     fun findById(id: Long) = userRepository.findById(id).get()
     fun findByEmail(email: String) = userRepository.findByEmail(email)
-    fun findAllUsers() = userRepository.findAll()
+    fun findAllUsers(pageable: Pageable) = userRepository.findAll(pageable)
 
     fun updateUser(id: Long, firstname: String?, lastname: String?, address: String?, postal: String?, city: String?): User {
         val user = userRepository.findById(id).get()
