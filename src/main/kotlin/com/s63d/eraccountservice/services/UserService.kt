@@ -18,6 +18,14 @@ class UserService(private val userRepository: UserRepository, private val roleRe
         } catch (e: DataAccessException) { throw DuplicateEntryException(email) }
     }
 
+    fun createUserIfNotExists(firstname: String, lastname: String, email: String, password: String, address: String, postal: String, city: String): User {
+        val user = userRepository.findByEmail(email)
+        if (user != null)
+            return user
+
+        return createUser(firstname, lastname, email, password, address, postal, city)
+    }
+
     fun findById(id: Long) = userRepository.findById(id).get()
     fun findByEmail(email: String) = userRepository.findByEmail(email)
     fun findAllUsers(pageable: Pageable) = userRepository.findAll(pageable)
