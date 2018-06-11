@@ -19,14 +19,13 @@ class JwtService(private val userService: UserService) : AuthenticationSuccessHa
         private const val PREFIX = "Bearer "
     }
 
-    fun decode(rawToken: String): MutableMap<String, Claim> {
-        val token = rawToken.replace("Bearer ", "")
-        return JWT.decode(token).claims
-    }
-
     override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
         val user = userService.findByEmail(authentication.name)!!
-        val token = JWT.create().withSubject(user.id.toString()).withClaim("userId", user.id).sign(algo)
+        val token = JWT.create()
+                .withSubject(user.email)
+                .withClaim("userId", user.id)
+                .withClaim("userRole", user.role.name)
+                .sign(algo)
         response.addHeader(HttpHeaders.AUTHORIZATION, PREFIX + token)
     }
 }
