@@ -14,6 +14,9 @@ class UserService(private val userRepository: UserRepository, private val roleRe
     fun createUser(firstname: String, lastname: String, email: String, password: String, address: String, postal: String, city: String): User {
         val basicRole = roleRepository.findById("basic").orElseThrow { RoleNotFoundException("basic") }
         return try{
+            val existing = userRepository.findByEmail(email)
+            if (existing != null) throw DuplicateEntryException(email)
+
             userRepository.save(User(email, firstname, lastname, bcrypt.encode(password), address, postal, city, basicRole))
         } catch (e: DataAccessException) { throw DuplicateEntryException(email) }
     }
