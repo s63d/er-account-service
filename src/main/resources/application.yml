@@ -9,6 +9,9 @@ spring:
         show-sql: true
     main:
       banner-mode: "off"
+hibernate:
+  dialect:
+    storage_engine: innodb
 server:
   port: 8081
 management:
