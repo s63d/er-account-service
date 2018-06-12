@@ -29,6 +29,7 @@ class SecurityConfig(private val userDetailService: UserDetailsService, private 
         http.cors()
                 .and().csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/v2/api-docs","/swagger-resources","/swagger-resources/**", "/swagger-ui.html", "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .anyRequest().authenticated()
